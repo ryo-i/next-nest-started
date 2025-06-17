@@ -251,14 +251,16 @@ AWS（Amazon）、GCP（Google）、Azure（Microsoft）が有名だが、AWSの
 1. PM・PL・TL・メンバー：イイダリョウ
 1. PMO：ケビンけびんそん
 
-＜補足＞
+<details>
+<summary>＜補足＞</summary>
+
 > |略称|名称|説明|
 > |---|---|---|
 > |PM|プロジェクトマネージャー|プロジェクト全体のマネジメント|
 > |PL|プロジェクトリーダー|現場の指揮・統括|
 > |TL|テックリード|技術的な視点からのチームリード|
 > |PMO|Project Management Office|プロジェクトマネジメント支援|
-</br>
+</details>
 
 ### 3.2.3. チーム運営計画
 <details>
