@@ -1,4 +1,4 @@
-# ドキュメント置き場
+# ドキュメント
 
 ## 目次
 
@@ -26,7 +26,7 @@
       - `error-handling.md`：エラー・例外処理設計
        - `validation-rules.md`：入力バリデーション仕様（Zodやサーバ検証含む）
     - `policy.md`：設計方針・規約など
-  - `/test`: test仕様書
+  - `test/`: test仕様書
     - `unit/`：単体テスト（関数やコンポーネント単位での動作検証）
       - `unit-test-cases.md`：単体テスト観点リスト（関数・コンポーネント単位）
       - `unit-test-guide.md`：Jestテスト実装ガイドライン（命名規則、モック方針）
