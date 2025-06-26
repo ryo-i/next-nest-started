@@ -6,7 +6,8 @@
   - `pm/`: プロジェクト管理
   - `design/`: 設計書
     - `analysis/`：要求分析（ユーザー視点のニーズや課題）
-      - `user-needs.md`：ユーザーニーズ・課題洗い出し（アイデアメモ含む）
+      - `idea-memo.md`：アイデアメモ
+      - `user-needs.md`：ユーザーニーズ・課題洗い出し
       - `stakeholder-analysis.md`：ステークホルダー分析
       - `business-goals.md`：ビジネス目標
     - `specification/`：要件定義（システム仕様）
@@ -25,7 +26,7 @@
       - `sequence.md`：処理フロー（Mermaidシーケンス図）
       - `error-handling.md`：エラー・例外処理設計
        - `validation-rules.md`：入力バリデーション仕様（Zodやサーバ検証含む）
-    - `policy.md`：設計方針・規約など
+    - [policy.md](./design/policy.md)：設計方針・規約など
   - `test/`: test仕様書
     - `unit/`：単体テスト（関数やコンポーネント単位での動作検証）
       - `unit-test-cases.md`：単体テスト観点リスト（関数・コンポーネント単位）
@@ -40,5 +41,35 @@
     - `acceptance/`：受け入れテスト（ユーザー視点のニーズに対する検証）
        - `acceptance-test-cases.md`：受け入れテスト観点・シナリオ（顧客要件に対する検証）
       - `acceptance-criteria.md`：受け入れ基準（合格条件）
-    - `policy.md`：テスト方針・テスト戦略など
+    - [policy.md](./test/policy.md)：テスト方針・テスト戦略など
   - `index.md`: 目次（このファイル）
+
+  ## ドキュメント作成方針
+
+  - mdファイルでマークダウン形式で書く
+    - https://qiita.com/tbpgr/items/989c6badefff69377da7
+    - https://qiita.com/k_maki/items/d2ed604ac967e029c9a9
+  - 表の幅はVSCodeプラグインMarkdown Tableで揃える
+    - https://qiita.com/tawara_/items/5d59cf725e7c7aa72f0f
+
+    AsIs
+    |id|名前|備考|
+    | --- | ---- | ---- |
+    |1|織田信長|人間五十年|
+    |2|ポール・マッカートニー|レット・イット・ビー|
+
+    ToBe
+    | id  | 名前                   | 備考                 |
+    | --- | ---------------------- | -------------------- |
+    | 1   | 織田信長               | 人間五十年           |
+    | 2   | ポール・マッカートニー | レット・イット・ビー |
+    |     |                        |                      |
+
+  - 図はなるべく画像ファイルではなくMermaidで書く
+    - VSCodeプラグインMarkdown Preview Mermaid Supportを使う
+    - https://zenn.dev/microsoft/articles/learning-mermaid
+
+    ```mermaid
+    flowchart LR
+    A --> B
+    ```
