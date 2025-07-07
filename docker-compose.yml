@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./apps/backend
+    command: npm run start:dev
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/mydb
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./apps/backend:/app
+      - ./prisma:/app/prisma
+
+  frontend:
+    build: ./apps/frontend
+    command: npm run dev
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/frontend:/app
+
+volumes:
+  postgres_data:
