@@ -18,7 +18,8 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://user:password@db:5432/mydb
+      - DATABASE_URL=postgres://user:password@db:5432/mydb
+      - PORT=3001
     ports:
       - "3001:3001"
     volumes:
