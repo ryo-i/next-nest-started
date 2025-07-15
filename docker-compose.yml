@@ -15,6 +15,7 @@ services:
   backend:
     build: ./apps/backend
     command: npm run start:dev
+    env_file: ./.env
     depends_on:
       - db
     environment:
@@ -29,6 +30,7 @@ services:
   frontend:
     build: ./apps/frontend
     command: npm run dev
+    env_file: ./.env
     depends_on:
       - backend
     ports:
