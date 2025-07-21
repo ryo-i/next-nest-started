@@ -25,7 +25,7 @@ services:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     volumes:
       - ./apps/backend:/app
-      - ./prisma:/app/prisma
+      - ./apps/backend/prisma:/app/prisma
 
   frontend:
     build: ./apps/frontend
