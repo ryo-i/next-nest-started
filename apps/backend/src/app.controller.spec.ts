@@ -4,19 +4,33 @@ import { AppService } from './app.service';
 
 describe('AppController', () => {
   let appController: AppController;
+  let appService: AppService;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const appServiceMock = {
+      getPersons: jest.fn().mockResolvedValue([
+        { id: 1, name: '織田信長' },
+        { id: 2, name: '豊臣秀吉' },
+        { id: 3, name: '徳川家康' },
+      ]),
+    };
+
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [{ provide: AppService, useValue: appServiceMock }],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    appController = module.get<AppController>(AppController);
+    appService = module.get<AppService>(AppService);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
-    });
+  it('should return a list of persons', async () => {
+    const result = await appController.getPersons();
+    expect(result).toEqual([
+      { id: 1, name: '織田信長' },
+      { id: 2, name: '豊臣秀吉' },
+      { id: 3, name: '徳川家康' },
+    ]);
+    expect(appService.getPersons).toHaveBeenCalled();
   });
 });
