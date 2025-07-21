@@ -1,17 +1,43 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
-export default function Message() {
-  const [message, setMessage] = useState('');
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+type Person = {
+  id: number;
+  name: string;
+};
+
+const Message = () => {
+  const [persons, setPersons] = useState<Person[]>([]); // 型を指定
 
   useEffect(() => {
-    axios.get(apiUrl as string)
-      .then(res => setMessage(res.data.message))
-      .catch(err => console.error(err));
-  }, [apiUrl]);
+    // APIを呼び出してデータを取得
+    const fetchPersons = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/persons');
+        if (!response.ok) {
+          throw new Error('Failed to fetch persons');
+        }
+        const data: Person[] = await response.json(); // 型を指定
+        setPersons(data);
+      } catch (error) {
+        console.error('Error fetching persons:', error);
+      }
+    };
 
-  return <div>{message}</div>;
-}
+    fetchPersons();
+  }, []);
+
+  return (
+    <div>
+      <h1>人物一覧</h1>
+      <ul>
+        {persons.map((person) => (
+          <li key={person.id}>{person.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Message;
