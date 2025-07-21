@@ -2,6 +2,10 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  // 既存データを削除
+  await prisma.person.deleteMany();
+
+  // 新しいデータを挿入
   await prisma.person.createMany({
     data: [
       { name: '織田信長' },
