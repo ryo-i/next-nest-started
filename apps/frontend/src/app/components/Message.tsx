@@ -11,7 +11,7 @@ export default function Message() {
     axios.get(apiUrl as string)
       .then(res => setMessage(res.data.message))
       .catch(err => console.error(err));
-  }, []);
+  }, [apiUrl]);
 
   return <div>{message}</div>;
 }
