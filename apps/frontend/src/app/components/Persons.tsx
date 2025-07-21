@@ -7,7 +7,7 @@ type Person = {
   name: string;
 };
 
-const Message = () => {
+const Persons = () => {
   const [persons, setPersons] = useState<Person[]>([]); // 型を指定
 
   useEffect(() => {
@@ -40,4 +40,4 @@ const Message = () => {
   );
 };
 
-export default Message;
+export default Persons;
