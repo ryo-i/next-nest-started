@@ -9,4 +9,9 @@ export class AppController {
   async getPersons() {
     return await this.appService.getPersons();
   }
+
+  @Get()
+  getRoot() {
+    return { message: 'Welcome to the API!' };
+  }
 }
