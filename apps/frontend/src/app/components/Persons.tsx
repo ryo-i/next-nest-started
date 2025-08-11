@@ -14,7 +14,7 @@ const Persons = () => {
     // APIを呼び出してデータを取得
     const fetchPersons = async () => {
       try {
-        const response = await fetch('http://localhost:3001/persons');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}persons`);
         if (!response.ok) {
           throw new Error('Failed to fetch persons');
         }
