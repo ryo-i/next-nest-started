@@ -10,7 +10,7 @@ export class AppController {
     return await this.appService.getPersons();
   }
 
-      @Get()
+  @Get()
   getRoot() {
     return { message: 'Welcome to the API!' };
   }
