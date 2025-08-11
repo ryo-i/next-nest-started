@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 type Person = {
   id: number;
@@ -14,14 +14,16 @@ const Persons = () => {
     // APIを呼び出してデータを取得
     const fetchPersons = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}persons`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}persons`,
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch persons');
+          throw new Error("Failed to fetch persons");
         }
         const data: Person[] = await response.json(); // 型を指定
         setPersons(data);
       } catch (error) {
-        console.error('Error fetching persons:', error);
+        console.error("Error fetching persons:", error);
       }
     };
 
