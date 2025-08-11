@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 type Person = {
   id: number;
@@ -14,14 +15,10 @@ const Persons = () => {
     // APIを呼び出してデータを取得
     const fetchPersons = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get<Person[]>(
           `${process.env.NEXT_PUBLIC_API_URL}persons`,
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch persons");
-        }
-        const data: Person[] = await response.json(); // 型を指定
-        setPersons(data);
+        setPersons(response.data);
       } catch (error) {
         console.error("Error fetching persons:", error);
       }
