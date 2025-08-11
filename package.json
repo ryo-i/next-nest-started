@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "prepare": "husky install",
+    "format:all": "npm run format --workspace=apps/frontend && npm run format --workspace=apps/backend"
+  },
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend"
+  ],
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
