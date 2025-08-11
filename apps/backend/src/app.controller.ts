@@ -5,8 +5,13 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('persons')
+  async getPersons() {
+    return await this.appService.getPersons();
+  }
+
   @Get()
-  getHello(): { message: string } {
-    return { message: this.appService.getHello() };
+  getRoot() {
+    return { message: 'Welcome to the API!' };
   }
 }

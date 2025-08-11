@@ -1,9 +1,9 @@
-import Message from './components/Message';
+import Persons from "./components/Persons";
 
 export default function Home() {
   return (
     <div>
-      <Message />
+      <Persons />
     </div>
   );
 }
