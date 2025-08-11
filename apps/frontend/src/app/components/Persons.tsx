@@ -11,7 +11,7 @@ type Person = {
 const Persons = () => {
   const [persons, setPersons] = useState<Person[]>([]); // 型を指定
 
-  useEffect(() => {
+      useEffect(() => {
     // APIを呼び出してデータを取得
     const fetchPersons = async () => {
       try {
