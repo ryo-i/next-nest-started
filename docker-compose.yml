@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./apps/backend
+    command: npm run start:dev
+    env_file: ./apps/backend/.env
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${BACKEND_PORT}
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./apps/backend:/app
+      - ./apps/backend/prisma:/app/prisma
+
+  frontend:
+    build: ./apps/frontend
+    command: npm run dev
+    env_file: ./apps/frontend/.env
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    volumes:
+      - ./apps/frontend:/app
+
+volumes:
+  postgres_data:
