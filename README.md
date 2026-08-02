@@ -40,6 +40,23 @@
 ### 前提条件
 - Docker × Docker Compose がインストール済み
 
+### 環境変数
+
+`.env` ファイルが必要です。見本ファイルから作成してください：
+
+```bash
+# ルート
+cp .env.example .env
+
+# backend
+cp apps/backend/.env.example apps/backend/.env
+
+# frontend
+cp apps/frontend/.env.example apps/frontend/.env
+```
+
+各 `.env.example` で環境変数の一覧が確認できます。
+
 ### 起動方法
 
 ```bash
