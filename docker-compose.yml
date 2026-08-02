@@ -22,9 +22,6 @@ services:
       - PORT=${BACKEND_PORT}
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
-    volumes:
-      - ./apps/backend:/app
-      - ./apps/backend/prisma:/app/prisma
 
   frontend:
     build: ./apps/frontend
@@ -34,8 +31,6 @@ services:
       - backend
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
-    volumes:
-      - ./apps/frontend:/app
 
 volumes:
   postgres_data:
