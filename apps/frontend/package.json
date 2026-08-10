@@ -9,6 +9,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"*.json\""
   },
   "dependencies": {
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.3.2",
