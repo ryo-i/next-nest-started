@@ -16,6 +16,9 @@ import { PersonResponseDto } from './persons/dto/person-response.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  /**
+   * 人物一覧を取得するエンドポイントです。
+   */
   @Get('persons')
   @ApiOperation({ summary: '人物一覧を取得する' })
   @ApiOkResponse({ type: PersonResponseDto, isArray: true })
@@ -23,6 +26,9 @@ export class AppController {
     return await this.appService.getPersons();
   }
 
+  /**
+   * 人物を作成するエンドポイントです。
+   */
   @Post('persons')
   @ApiOperation({ summary: '人物を作成する' })
   @ApiBody({ type: CreatePersonDto })
@@ -32,6 +38,9 @@ export class AppController {
     return await this.appService.createPerson(createPersonDto);
   }
 
+  /**
+   * ルートメッセージを返します。
+   */
   @Get()
   @ApiOperation({ summary: 'ルートメッセージを返す' })
   @ApiOkResponse({

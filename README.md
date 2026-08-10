@@ -4,6 +4,9 @@
 - バックエンド：NestJS 11（Repository パターン）
 - DB：PostgreSQL + Prisma
 - 共通型：`packages/shared`（monorepo）
+- CI：GitHub Actions で unit / e2e を実行
+- API ドキュメント：Swagger（`/api`）
+- バリデーション：`class-validator` + `ValidationPipe`
 
 ## アーキテクチャ
 
@@ -18,6 +21,7 @@ Controller → Service → Repository（抽象） → Repository実装（Prisma�
 - `persons/persons.repository.ts` : Repositoryインターフェース（抽象クラス）
 - `persons/persons.repository.impl.ts` : Prismaを使った実装
 - `common/filters/global-exception.filter.ts` : グローバルエラーハンドリング
+- `persons/dto/` : リクエスト/レスポンス DTO + Swagger / class-validator 定義
 
 ### フロントエンド
 
@@ -102,6 +106,13 @@ docker compose up --build
 | フロント           | http://localhost:3000         |
 | バック（ルート）   | http://localhost:3001/        |
 | バック（人物一覧） | http://localhost:3001/persons |
+| Swagger UI         | http://localhost:3001/api     |
+
+### Swagger / バリデーション
+
+- Swagger は NestJS の `@nestjs/swagger` でコードから自動生成しています
+- `POST /persons` は `CreatePersonDto` を使ってバリデーションします
+- `ValidationPipe` により、不要な項目は除去し、型変換も行います
 
 ### DB 初期化（初回のみ）
 
@@ -152,6 +163,11 @@ npm run test:e2e --workspace=apps/frontend
 
 コミット時に自動でフロント・バックのユニットテストが実行されます。
 テストが1つでも失敗するとコミットがブロックされます。
+
+### CI
+
+GitHub Actions でもフロント・バックの unit / e2e を実行します。
+ローカルの pre-commit をすり抜けても、PR 時に最終確認されます。
 
 ## 主な技術スタック
 
