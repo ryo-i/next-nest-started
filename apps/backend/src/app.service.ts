@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IPersonRepository } from './persons/persons.repository';
+import { CreatePersonDto } from './persons/dto/create-person.dto';
 
 @Injectable()
 export class AppService {
@@ -7,5 +8,9 @@ export class AppService {
 
   async getPersons() {
     return this.personRepository.findAll();
+  }
+
+  async createPerson(createPersonDto: CreatePersonDto) {
+    return this.personRepository.create(createPersonDto);
   }
 }

@@ -13,6 +13,10 @@ describe('AppController', () => {
         { id: 2, name: '豊臣秀吉' },
         { id: 3, name: '徳川家康' },
       ]),
+      createPerson: jest.fn().mockResolvedValue({
+        id: 4,
+        name: '明智光秀',
+      }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -32,5 +36,16 @@ describe('AppController', () => {
       { id: 3, name: '徳川家康' },
     ]);
     expect(appService.getPersons).toHaveBeenCalled();
+  });
+
+  it('should create a person', async () => {
+    const result = await appController.createPerson({
+      name: '明智光秀',
+    } as any);
+
+    expect(result).toEqual({ id: 4, name: '明智光秀' });
+    expect(appService.createPerson).toHaveBeenCalledWith({
+      name: '明智光秀',
+    });
   });
 });

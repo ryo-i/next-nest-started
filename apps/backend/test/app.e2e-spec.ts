@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/prisma/prisma.service';
@@ -14,6 +14,10 @@ describe('AppController (e2e)', () => {
           { id: 1, name: '織田信長' },
           { id: 2, name: '豊臣秀吉' },
         ]),
+        create: jest.fn().mockImplementation(({ data }) => ({
+          id: 3,
+          ...data,
+        })),
       },
       $connect: jest.fn(),
       $disconnect: jest.fn(),
@@ -27,6 +31,12 @@ describe('AppController (e2e)', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+      }),
+    );
     await app.init();
   });
 
@@ -49,5 +59,17 @@ describe('AppController (e2e)', () => {
         { id: 1, name: '織田信長' },
         { id: 2, name: '豊臣秀吉' },
       ]);
+  });
+
+  it('/persons (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/persons')
+      .send({ name: '明智光秀' })
+      .expect(201)
+      .expect({ id: 3, name: '明智光秀' });
+  });
+
+  it('/persons (POST) should validate body', () => {
+    return request(app.getHttpServer()).post('/persons').send({}).expect(400);
   });
 });
