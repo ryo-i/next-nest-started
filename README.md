@@ -6,6 +6,7 @@
 - 共通型：`packages/shared`（monorepo）
 - CI：GitHub Actions で unit / e2e を実行
 - API ドキュメント：Swagger（`/api`）
+- 型定義ドキュメント：TypeDoc（`packages/shared/docs`）
 - バリデーション：`class-validator` + `ValidationPipe`
 
 ## アーキテクチャ
@@ -113,6 +114,20 @@ docker compose up --build
 - Swagger は NestJS の `@nestjs/swagger` でコードから自動生成しています
 - `POST /persons` は `CreatePersonDto` を使ってバリデーションします
 - `ValidationPipe` により、不要な項目は除去し、型変換も行います
+
+### TypeDoc（型定義ドキュメント）
+
+共有型定義（`packages/shared`）を HTML ドキュメント化します：
+
+```bash
+cd packages/shared
+npm run build:docs
+open docs/index.html
+```
+
+- `Person` / `CreatePersonDto` / `UpdatePersonDto` の型定義が自動文書化されます
+- `packages/shared/docs/index.html` から確認可能
+- TSDoc コメントから自動生成・更新されます
 
 ### DB 初期化（初回のみ）
 
