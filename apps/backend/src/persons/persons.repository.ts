@@ -1,4 +1,4 @@
-import { Person } from '@prisma/client';
+import { Person } from '@repo/shared';
 
 export abstract class IPersonRepository {
   abstract findAll(): Promise<Person[]>;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Person } from "@/types/person";
+import { Person } from "@repo/shared";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,

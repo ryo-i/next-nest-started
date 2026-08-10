@@ -14,6 +14,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"*.json\""
   },
   "dependencies": {
+    "@repo/shared": "*",
     "axios": "^1.10.0",
     "dotenv": "^17.2.0",
     "next": "^15.5.22",
