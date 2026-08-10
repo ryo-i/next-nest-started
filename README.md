@@ -122,6 +122,25 @@ docker compose up --build
 - `POST /persons` は `CreatePersonDto` を使ってバリデーションします
 - `ValidationPipe` により、不要な項目は除去し、型変換も行います
 
+#### Swagger が開かないとき（代替手順）
+
+通常は `docker compose up --build` で `http://localhost:3001/api` を開きます。
+もし Swagger が 404 になる場合は、DB を Docker で起動したまま backend だけローカル起動に切り替えます。
+
+```bash
+# 1) DB は Docker で起動
+docker compose up -d db
+
+# 2) backend コンテナが 3001 を使っている場合は停止
+docker compose stop backend
+
+# 3) backend をローカル起動（DB は Docker の 55432 に接続）
+DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb BACKEND_PORT=3001 npm run start:dev --workspace=apps/backend
+```
+
+この状態で `http://localhost:3001/api` と `http://localhost:3001/api-json` を開けます。
+この手順は一時的な回避策です。Docker 側が安定したら通常手順（Docker 起動）に戻してください。
+
 ### TypeDoc（型定義ドキュメント）
 
 共有型定義（`packages/shared`）を HTML ドキュメント化します：
