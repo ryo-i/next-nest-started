@@ -37,7 +37,7 @@ const Persons = () => {
             </h1>
           </div>
           <span className="shrink-0 rounded-full bg-slate-900 px-3 py-1.5 text-sm font-semibold text-slate-100 shadow-sm">
-            {persons.length} people
+            {persons.length} 名
           </span>
         </div>
 
@@ -55,10 +55,6 @@ const Persons = () => {
                   {person.name}
                 </span>
               </div>
-
-              <span className="ml-4 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-slate-500 ring-1 ring-slate-200">
-                ID: {person.id}
-              </span>
             </li>
           ))}
         </ul>
