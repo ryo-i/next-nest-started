@@ -1,7 +1,8 @@
 {
   "scripts": {
     "prepare": "husky install",
-    "format:all": "npm run format --workspace=apps/frontend && npm run format --workspace=apps/backend"
+    "format:all": "npm run format --workspace=apps/frontend && npm run format --workspace=apps/backend",
+    "studio": "cd apps/backend && DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb npx prisma studio --port 5555"
   },
   "workspaces": [
     "apps/frontend",

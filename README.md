@@ -7,6 +7,8 @@
 - CI：GitHub Actions で unit / e2e を実行
 - API ドキュメント：Swagger（`/api`）
 - 型定義ドキュメント：TypeDoc（`packages/shared/docs`）
+- DB GUI：Prisma Studio
+- UIカタログ（今後）：Storybook
 - バリデーション：`class-validator` + `ValidationPipe`
 
 ## アーキテクチャ
@@ -102,12 +104,15 @@ cp apps/frontend/.env.example apps/frontend/.env
 docker compose up --build
 ```
 
+ローカルに PostgreSQL が入っている環境でも衝突しにくいように、DB 公開ポートはデフォルトで `55432` を使います。
+
 | サービス           | URL                           |
 | ------------------ | ----------------------------- |
 | フロント           | http://localhost:3000         |
 | バック（ルート）   | http://localhost:3001/        |
 | バック（人物一覧） | http://localhost:3001/persons |
 | Swagger UI         | http://localhost:3001/api     |
+| DB（PostgreSQL）   | localhost:55432               |
 
 ### Swagger / バリデーション
 
@@ -128,6 +133,42 @@ open docs/index.html
 - `Person` / `CreatePersonDto` / `UpdatePersonDto` の型定義が自動文書化されます
 - `packages/shared/docs/index.html` から確認可能
 - TSDoc コメントから自動生成・更新されます
+
+### Prisma Studio（DB GUI）
+
+Prisma Studio はブラウザで使える DB GUI です。
+
+最短手順（推奨）：
+
+```bash
+npm run studio
+```
+
+- URL: `http://localhost:5555`
+- 初期状態でデータがない場合は `There are no rows in this table` と表示されます（正常）
+
+`npm run studio` は内部で次を実行しています。
+
+```bash
+cd apps/backend
+DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb npx prisma studio --port 5555
+```
+
+- DB 側は Docker 内の `db:5432` を使い続けるため、アプリ挙動は変わりません
+- ホスト側の Studio だけ `127.0.0.1:55432` を使うため、ローカル PostgreSQL と競合しにくくなります
+
+補足：以下のエラーは接続先の不一致（別の PostgreSQL へ接続）で起きることがあります。
+
+- `Can't reach database server at db:5432`
+- `User was denied access on the database`
+- `Invalid STUDIO_EMBED_BUILD ...`（詳細表示時に長いスタックが出る）
+
+### Storybook（今後の体験メモ）
+
+現時点では未導入です。今後 UI コンポーネントが増えたタイミングで導入する想定です。
+
+- 目的：コンポーネントの見た目確認、状態ごとの検証、UI 仕様の共有
+- 導入時の注意：既存テスト基盤（Vitest / jest-dom）との依存関係整合を確認してから追加する
 
 ### DB 初期化（初回のみ）
 
