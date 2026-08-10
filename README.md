@@ -8,7 +8,7 @@
 - API ドキュメント：Swagger（`/api`）
 - 型定義ドキュメント：TypeDoc（`packages/shared/docs`）
 - DB GUI：Prisma Studio
-- UIカタログ（今後）：Storybook
+- UIカタログ：Storybook
 - バリデーション：`class-validator` + `ValidationPipe`
 
 ## アーキテクチャ
@@ -165,7 +165,7 @@ DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb npx prisma studio --p
 - `User was denied access on the database`
 - `Invalid STUDIO_EMBED_BUILD ...`（詳細表示時に長いスタックが出る）
 
-### Storybook（今後の体験メモ）
+### Storybook
 
 最小構成で導入済みです。`PersonsView` だけを Story 化しています。
 
