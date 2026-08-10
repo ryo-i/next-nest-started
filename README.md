@@ -29,11 +29,13 @@ Controller → Service → Repository（抽象） → Repository実装（Prisma�
 ### フロントエンド
 
 ```
-Page → Component → Custom Hook → API層（Axios）
+Page → Component(表示) → Custom Hook → API層（Axios）
 ```
 
 - `app/page.tsx` : ページ
-- `app/components/Persons.tsx` : UIコンポーネント
+- `app/components/Persons.tsx` : ロジックを持つラッパーコンポーネント
+- `app/components/PersonsStatus.tsx` : loading / error の汎用表示コンポーネント
+- `app/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）
 - `hooks/usePersons.ts` : データ取得ロジック
 - `lib/api.ts` : Axiosクライアント・エンドポイント集約
 - `types/person.ts` : `@repo/shared` からの再エクスポート
@@ -165,10 +167,19 @@ DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb npx prisma studio --p
 
 ### Storybook（今後の体験メモ）
 
-現時点では未導入です。今後 UI コンポーネントが増えたタイミングで導入する想定です。
+最小構成で導入済みです。`PersonsView` だけを Story 化しています。
 
-- 目的：コンポーネントの見た目確認、状態ごとの検証、UI 仕様の共有
-- 導入時の注意：既存テスト基盤（Vitest / jest-dom）との依存関係整合を確認してから追加する
+```bash
+npm run storybook
+```
+
+- URL: `http://localhost:6006`
+- Story は `PersonsView` と `PersonsStatus` を登録しています
+- addon は最小限で `@storybook/addon-essentials` のみを使っています
+- バージョンは `8.6.18` に固定しています
+- 実行場所はリポジトリのルートです（backend ディレクトリからは実行しません）
+- `Persons.tsx` は hook を使うラッパーにして、Storybook では副作用のない `PersonsView` と `PersonsStatus` を見せています
+- loading / error は `resourceLabel` を props で受け、別画面でも流用しやすい形にしています
 
 ### DB 初期化（初回のみ）
 
