@@ -1,31 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-type Person = {
-  id: number;
-  name: string;
-};
+import React from "react";
+import { usePersons } from "@/hooks/usePersons";
 
 const Persons = () => {
-  const [persons, setPersons] = useState<Person[]>([]); // 型を指定
+  const { persons, loading, error } = usePersons();
 
-  useEffect(() => {
-    // APIを呼び出してデータを取得
-    const fetchPersons = async () => {
-      try {
-        const response = await axios.get<Person[]>(
-          `${process.env.NEXT_PUBLIC_API_URL}persons`,
-        );
-        setPersons(response.data);
-      } catch (error) {
-        console.error("Error fetching persons:", error);
-      }
-    };
+  if (loading) {
+    return (
+      <section className="min-h-screen bg-slate-100 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/70 sm:p-8">
+          <p className="text-slate-700">人物データを読み込み中です...</p>
+        </div>
+      </section>
+    );
+  }
 
-    fetchPersons();
-  }, []);
+  if (error) {
+    return (
+      <section className="min-h-screen bg-slate-100 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-3xl rounded-2xl border border-rose-200 bg-rose-50 p-6 shadow-lg shadow-rose-100/70 sm:p-8">
+          <p className="font-semibold text-rose-700">{error}</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="min-h-screen bg-slate-100 px-4 py-12 sm:px-6 lg:px-8">
