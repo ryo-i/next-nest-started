@@ -1,7 +1,7 @@
 # Next.js + NestJS スターターキット
 
-- フロントエンド：Next.js 15（App Router）
-- バックエンド：NestJS 11（Repository パターン）
+- フロントエンド：Next.js 15（App Router / Bulletproof React）
+- バックエンド：NestJS 11（レイヤードアーキテクチャ）
 - DB：PostgreSQL + Prisma
 - 共通型：`packages/shared`（backend ドメイン） / OpenAPI（フロントの API 型）
 - CI：GitHub Actions で unit / e2e を実行
@@ -15,31 +15,36 @@
 
 ### バックエンド
 
+レイヤードアーキテクチャです。インフラ（Prisma）は Repository の抽象を通して切り離しています。
+
 ```
 Controller → Service → Repository（抽象） → Repository実装（Prisma）
 ```
 
-- `app.controller.ts` : エンドポイント定義
-- `app.service.ts` : ビジネスロジック
+- `app.controller.ts` : プレゼンテーション層（エンドポイント定義）
+- `persons/dto/` : プレゼンテーション層（リクエスト/レスポンス DTO + Swagger / class-validator）
+- `app.service.ts` : アプリケーション層（ビジネスロジック）
 - `persons/persons.repository.ts` : Repositoryインターフェース（抽象クラス）
-- `persons/persons.repository.impl.ts` : Prismaを使った実装
+- `persons/persons.repository.impl.ts` : インフラ層（Prisma実装）
 - `common/filters/global-exception.filter.ts` : グローバルエラーハンドリング
-- `persons/dto/` : リクエスト/レスポンス DTO + Swagger / class-validator 定義
 
 ### フロントエンド
 
+Bulletproof React の feature-based 構成です。`app/` はルーティング、機能コードは `features/persons/` にまとめます。
+
 ```
-Page → Component(表示) → Custom Hook → API層（Axios）
+Page → Feature（Component / Hook / API） → 共通 axios クライアント
 ```
 
-- `app/page.tsx` : ページ
-- `app/components/Persons.tsx` : ロジックを持つラッパーコンポーネント
-- `app/components/PersonsStatus.tsx` : loading / error の汎用表示コンポーネント
-- `app/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）
-- `hooks/usePersons.ts` : データ取得ロジック
-- `lib/api.ts` : Axiosクライアント・エンドポイント集約
+- `app/page.tsx` : ページ（`@/features/persons` を呼ぶだけ）
+- `features/persons/components/Persons.tsx` : ロジックを持つラッパーコンポーネント
+- `features/persons/components/PersonsStatus.tsx` : loading / error の表示コンポーネント
+- `features/persons/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）
+- `features/persons/hooks/usePersons.ts` : データ取得ロジック
+- `features/persons/api/person-api.ts` : Persons の API 呼び出し
+- `features/persons/types/person.ts` : 生成型から `Person` / `CreatePersonDto` を再エクスポート
+- `lib/api-client.ts` : 共通 axios クライアント
 - `lib/openapi.d.ts` : OpenAPI から生成した型（直接編集しない）
-- `types/person.ts` : 生成型から `Person` / `CreatePersonDto` を再エクスポート
 
 ### API 型（OpenAPI）
 
@@ -69,7 +74,7 @@ backend のドメイン型として残しています。フロントの API 型�
 │   ├── backend/
 │   │   ├── src/
 │   │   │   ├── common/filters/       # グローバルエラーハンドリング
-│   │   │   ├── persons/              # Repositoryパターン
+│   │   │   ├── persons/              # レイヤード（Repository）
 │   │   │   ├── prisma/               # PrismaService
 │   │   │   ├── app.controller.ts
 │   │   │   ├── app.service.ts
@@ -82,13 +87,11 @@ backend のドメイン型として残しています。フロントの API 型�
 │   │   └── test/                     # E2Eテスト
 │   └── frontend/
 │       ├── src/
-│       │   ├── app/
-│       │   │   ├── components/       # UIコンポーネント
+│       │   ├── app/                  # Next.js ルーティング
 │       │   │   ├── page.tsx
 │       │   │   └── layout.tsx
-│       │   ├── hooks/                # Custom Hooks
-│       │   ├── lib/                  # API層・OpenAPI生成型
-│       │   └── types/                # OpenAPI型の再エクスポート
+│       │   ├── features/persons/     # Bulletproof（feature-based）
+│       │   └── lib/                  # 共通 axios・OpenAPI生成型
 │       └── e2e/                      # PlaywrightによるE2E
 ├── packages/
 │   └── shared/                       # フロント・バック共通型
@@ -218,7 +221,7 @@ npm run storybook
 - addon は最小限で `@storybook/addon-essentials` のみを使っています
 - バージョンは `8.6.18` に固定しています
 - 実行場所はリポジトリのルートです（backend ディレクトリからは実行しません）
-- `Persons.tsx` は hook を使うラッパーにして、Storybook では副作用のない `PersonsView` と `PersonsStatus` を見せています
+- `features/persons` の `Persons.tsx` は hook を使うラッパーにして、Storybook では副作用のない `PersonsView` と `PersonsStatus` を見せています
 - loading / error は `resourceLabel` を props で受け、別画面でも流用しやすい形にしています
 
 ### DB 初期化（初回のみ）

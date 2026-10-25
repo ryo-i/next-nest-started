@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { usePersons } from "@/hooks/usePersons";
+import { usePersons } from "../hooks/usePersons";
 import { PersonsView } from "./PersonsView";
 import { PersonsStatus } from "./PersonsStatus";
 

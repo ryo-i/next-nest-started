@@ -1,9 +1,5 @@
-import axios from "axios";
-import type { Person } from "@/types/person";
-
-const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
+import { apiClient } from "@/lib/api-client";
+import type { Person } from "../types/person";
 
 export const personApi = {
   getAll: async (): Promise<Person[]> => {

@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { usePersons } from "./usePersons";
-import { personApi } from "@/lib/api";
+import { personApi } from "../api/person-api";
 import { vi } from "vitest";
 
-vi.mock("@/lib/api", () => ({
+vi.mock("../api/person-api", () => ({
   personApi: {
     getAll: vi.fn(),
   },

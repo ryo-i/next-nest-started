@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import Persons from "./Persons";
-import { usePersons } from "@/hooks/usePersons";
+import { usePersons } from "../hooks/usePersons";
 import { vi } from "vitest";
 
-vi.mock("@/hooks/usePersons", () => ({
+vi.mock("../hooks/usePersons", () => ({
   usePersons: vi.fn(),
 }));
 

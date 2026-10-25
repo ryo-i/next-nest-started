@@ -1,5 +1,5 @@
 import React from "react";
-import type { Person } from "@/types/person";
+import type { Person } from "../types/person";
 
 type PersonsViewProps = {
   persons: Person[];
