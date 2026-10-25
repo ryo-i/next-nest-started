@@ -28,6 +28,14 @@ Controller → Service → Repository（抽象） → Repository実装（Prisma�
 - `persons/persons.repository.impl.ts` : インフラ層（Prisma実装）
 - `common/filters/global-exception.filter.ts` : グローバルエラーハンドリング
 
+認証・設定ライブラリは未導入です。必要になったときの候補:
+
+- 認証: `@nestjs/jwt` + Passport（JWT。フロントの Auth.js と対になる）
+- 設定: `@nestjs/config`（環境変数の型付き読み込み）
+- レート制限: `@nestjs/throttler`
+- ログ: nestjs-pino
+- ヘルスチェック: `@nestjs/terminus`
+
 ### フロントエンド
 
 Bulletproof React の feature-based 構成です。`app/` はルーティング、機能コードは `features/persons/` にまとめます。
@@ -45,6 +53,14 @@ Page → Feature（Component / Hook / API） → 共通 axios クライアント
 - `features/persons/types/person.ts` : 生成型から `Person` / `CreatePersonDto` を再エクスポート
 - `lib/api-client.ts` : 共通 axios クライアント
 - `lib/openapi.d.ts` : OpenAPI から生成した型（直接編集しない）
+
+状態管理・フォームライブラリは未導入です。必要になったときの候補:
+
+- サーバー状態（API データ）: TanStack Query
+- クライアント状態（画面をまたぐ UI）: Zustand
+- フォーム: React Hook Form + Zod
+- UI 部品: shadcn/ui（Tailwind と相性が良い）
+- 認証: Auth.js（ログインを足すとき）
 
 ### API 型（OpenAPI）
 
