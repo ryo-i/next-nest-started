@@ -1,5 +1,5 @@
 import React from "react";
-import { Person } from "@repo/shared";
+import type { Person } from "@/types/person";
 
 type PersonsViewProps = {
   persons: Person[];

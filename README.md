@@ -3,9 +3,9 @@
 - フロントエンド：Next.js 15（App Router）
 - バックエンド：NestJS 11（Repository パターン）
 - DB：PostgreSQL + Prisma
-- 共通型：`packages/shared`（monorepo）
+- 共通型：`packages/shared`（backend ドメイン） / OpenAPI（フロントの API 型）
 - CI：GitHub Actions で unit / e2e を実行
-- API ドキュメント：Swagger（`/api`）
+- API ドキュメント：Swagger（`/api`） / OpenAPI spec（`apps/backend/openapi.json`）
 - 型定義ドキュメント：TypeDoc（`packages/shared/docs`）
 - DB GUI：Prisma Studio
 - UIカタログ：Storybook
@@ -38,7 +38,19 @@ Page → Component(表示) → Custom Hook → API層（Axios）
 - `app/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）
 - `hooks/usePersons.ts` : データ取得ロジック
 - `lib/api.ts` : Axiosクライアント・エンドポイント集約
-- `types/person.ts` : `@repo/shared` からの再エクスポート
+- `lib/openapi.d.ts` : OpenAPI から生成した型（直接編集しない）
+- `types/person.ts` : 生成型から `Person` / `CreatePersonDto` を再エクスポート
+
+### API 型（OpenAPI）
+
+```
+backend DTO / Swagger
+  → apps/backend/openapi.json
+  → apps/frontend/src/lib/openapi.d.ts
+  → axios（通信）
+```
+
+フロントの API 型は OpenAPI から生成します。backend の API を変えたら `npm run generate:api` で同期します。axios は通信担当のままです。
 
 ### 共通型（packages/shared）
 
@@ -47,7 +59,7 @@ packages/shared/src/types/person.ts
   → Person / CreatePersonDto / UpdatePersonDto
 ```
 
-フロント・バック両方が `@repo/shared` を参照するため、型の乖離が発生しません。
+backend のドメイン型として残しています。フロントの API 型は OpenAPI 側を正とします。
 
 ## ファイル構成
 
@@ -66,6 +78,7 @@ packages/shared/src/types/person.ts
 │   │   │   ├── schema.prisma
 │   │   │   ├── seed.ts
 │   │   │   └── migrations/
+│   │   ├── openapi.json              # 生成された OpenAPI spec
 │   │   └── test/                     # E2Eテスト
 │   └── frontend/
 │       ├── src/
@@ -74,8 +87,8 @@ packages/shared/src/types/person.ts
 │       │   │   ├── page.tsx
 │       │   │   └── layout.tsx
 │       │   ├── hooks/                # Custom Hooks
-│       │   ├── lib/                  # API層
-│       │   └── types/                # 型定義（shared再エクスポート）
+│       │   ├── lib/                  # API層・OpenAPI生成型
+│       │   └── types/                # OpenAPI型の再エクスポート
 │       └── e2e/                      # PlaywrightによるE2E
 ├── packages/
 │   └── shared/                       # フロント・バック共通型
@@ -116,11 +129,19 @@ docker compose up --build
 | Swagger UI         | http://localhost:3001/api     |
 | DB（PostgreSQL）   | localhost:55432               |
 
-### Swagger / バリデーション
+### Swagger / OpenAPI / バリデーション
 
 - Swagger は NestJS の `@nestjs/swagger` でコードから自動生成しています
+- OpenAPI spec は `apps/backend/openapi.json` に書き出します
+- フロントは `openapi-typescript` で型だけ生成し、通信は axios のままです
 - `POST /persons` は `CreatePersonDto` を使ってバリデーションします
 - `ValidationPipe` により、不要な項目は除去し、型変換も行います
+
+backend の API を変えたあとは、ルートで次を実行してフロントの型を更新します。
+
+```bash
+npm run generate:api
+```
 
 #### Swagger が開かないとき（代替手順）
 

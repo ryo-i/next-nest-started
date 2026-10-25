@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { personApi } from "@/lib/api";
-import { Person } from "@repo/shared";
+import type { Person } from "@/types/person";
 
 export const usePersons = () => {
   const [persons, setPersons] = useState<Person[]>([]);

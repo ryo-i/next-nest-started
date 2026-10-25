@@ -1,9 +1,10 @@
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { createOpenApiDocument } from './openapi/swagger.config';
 
 dotenv.config();
 
@@ -20,13 +21,7 @@ async function bootstrap() {
     origin: process.env.FRONTEND_ORIGIN,
     credentials: true,
   });
-  const config = new DocumentBuilder()
-    .setTitle('NextNest API')
-    .setDescription('Next.js + NestJS starter kit API')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, createOpenApiDocument(app));
   await app.listen(process.env.BACKEND_PORT ?? 3001);
 }
 bootstrap();
