@@ -44,7 +44,7 @@ Bulletproof React の feature-based 構成です。`app/` はルーティング�
 Page → Feature（Component / Hook / API） → 共通 axios クライアント
 ```
 
-- `app/page.tsx` : ページ（`@/features/persons` を呼ぶだけ）
+- `app/page.tsx` : ページ（Client Component の `Persons` を呼ぶだけ）
 - `features/persons/components/Persons.tsx` : ロジックを持つラッパーコンポーネント
 - `features/persons/components/PersonsStatus.tsx` : loading / error の表示コンポーネント
 - `features/persons/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）
