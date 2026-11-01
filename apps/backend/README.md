@@ -33,8 +33,11 @@ PersonsController → PersonsService → PersonsRepository → Prisma
 
 ## Project setup
 
+依存関係はリポジトリルートの lockfile から入れます。
+
 ```bash
-$ npm install
+# リポジトリルート
+$ npm ci
 ```
 
 ## Compile and run the project

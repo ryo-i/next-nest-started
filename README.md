@@ -102,7 +102,8 @@ backend DTO / Swagger
 │       │   └── lib/                  # 共通 axios・OpenAPI生成型
 │       └── e2e/                      # PlaywrightによるE2E
 ├── docker-compose.yml
-└── package.json                      # npm workspaces（monorepo）
+├── package.json                      # npm workspaces（monorepo）
+└── package-lock.json                 # 依存の唯一の lockfile
 ```
 
 ## セットアップ・起動
@@ -120,6 +121,16 @@ cp .env.example .env
 cp apps/backend/.env.example apps/backend/.env
 cp apps/frontend/.env.example apps/frontend/.env
 ```
+
+### 依存関係
+
+ローカル、CI、Docker は、リポジトリルートの `package-lock.json` を `npm ci` で入れます。
+
+```bash
+npm ci
+```
+
+Docker のビルドコンテキストはリポジトリルートです。イメージの中でも同じ lockfile を使います。
 
 ### 起動
 
