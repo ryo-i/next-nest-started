@@ -45,7 +45,7 @@ Page → Feature（Component / Hook / API） → 共通 axios クライアント
 ```
 
 - `app/page.tsx` : ページ（Server Component）。`@/features/persons` から `Persons` を呼ぶ
-- `features/persons/index.ts` : feature の公開口。外からはここだけを import する
+- `features/persons/index.ts` : feature の公開口。`"use client"` の境界にし、ページ本体は Server Component のままにする
 - `features/persons/components/Persons.tsx` : ロジックを持つラッパーコンポーネント
 - `features/persons/components/PersonsStatus.tsx` : loading / error の表示コンポーネント
 - `features/persons/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）

@@ -1,3 +1,5 @@
+"use client";
+
 export { default as Persons } from "./components/Persons";
 export { PersonsView } from "./components/PersonsView";
 export { PersonsStatus } from "./components/PersonsStatus";
