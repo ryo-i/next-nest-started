@@ -38,13 +38,14 @@ Controller → Service → Repository（抽象） → Repository実装（Prisma�
 
 ### フロントエンド
 
-Bulletproof React の feature-based 構成です。`app/` はルーティング、機能コードは `features/persons/` にまとめます。
+Next.js の App Router はルーティングと metadata（OGP）に使います。人物一覧の取得には SSR を使わず、ブラウザから API を呼びます。画面の機能は Bulletproof React の feature-based 構成で、`features/persons/` にまとめます。
 
 ```
 Page → Feature（Component / Hook / API） → 共通 axios クライアント
 ```
 
-- `app/page.tsx` : ページ（Client Component の `Persons` を呼ぶだけ）
+- `app/page.tsx` : ページ（Server Component）。`@/features/persons` から `Persons` を呼ぶ
+- `features/persons/index.ts` : feature の公開口。外からはここだけを import する
 - `features/persons/components/Persons.tsx` : ロジックを持つラッパーコンポーネント
 - `features/persons/components/PersonsStatus.tsx` : loading / error の表示コンポーネント
 - `features/persons/components/PersonsView.tsx` : 表示専用コンポーネント（Storybook で利用）
@@ -107,6 +108,7 @@ backend のドメイン型として残しています。フロントの API 型�
 │       │   │   ├── page.tsx
 │       │   │   └── layout.tsx
 │       │   ├── features/persons/     # Bulletproof（feature-based）
+│       │   │   └── index.ts          # feature の公開口
 │       │   └── lib/                  # 共通 axios・OpenAPI生成型
 │       └── e2e/                      # PlaywrightによるE2E
 ├── packages/

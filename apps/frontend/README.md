@@ -16,7 +16,11 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next.js の App Router はルーティングと metadata（OGP）に使います。データの取得に SSR は使わず、ブラウザから API を呼びます。画面の機能は Bulletproof React の構成で `src/features/persons` に置き、外からは公開口だけを import します。`src/app/page.tsx` 自体は Server Component のままです。
+
+```ts
+import { Persons } from "@/features/persons";
+```
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
