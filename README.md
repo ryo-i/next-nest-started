@@ -74,6 +74,25 @@ backend DTO / Swagger
 
 フロントの API 型は OpenAPI から生成します。backend の API を変えたら `npm run generate:api` で同期します。axios は通信担当のままです。バックエンドのドメイン型は `persons/person.ts` に置きます。
 
+### 機能の追加
+
+次の機能も `persons` と同じ形で足します。
+
+- バックエンドは `apps/backend/src/<機能名>/` に Controller、Service、Repository、DTO を置きます。Prisma を使うのは Repository だけです。作ったモジュールは `AppModule` に import します。
+- フロントは `apps/frontend/src/features/<機能名>/` に api、components、hooks、types と公開口の `index.ts` を置きます。`app/` のページは Server Component のまま、公開口から画面を呼びます。
+- API を変えたあとは `npm run generate:api` で、フロントの型を OpenAPI から更新します。
+
+### デプロイ
+
+手順中の `DATABASE_URL` はローカル用です。Docker のコンテナ同士は `db:5432`、このマシンから接続するときは `127.0.0.1:55432` を使います。
+
+本番では `DATABASE_URL` を、その環境の PostgreSQL の接続文字列に差し替えます。スキーマも、起動前の `prisma migrate deploy` も同じです。フロントとバックの URL が変わるときは `NEXT_PUBLIC_API_URL` と `FRONTEND_ORIGIN` も合わせます。
+
+置き場所は分けても、ひとつにまとめても、同じ構成で出せます。
+
+- 分ける例: フロントを Vercel、バックを Render、DB を Supabase や Render Postgres に出す。
+- まとめる例: AWS の中にフロント、バック、RDS を置く。
+
 ## ファイル構成
 
 ```
