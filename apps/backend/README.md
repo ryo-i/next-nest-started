@@ -23,7 +23,13 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+レイヤードアーキテクチャです。`src/persons/` の中を、プレゼンテーション層、ドメイン層、データアクセス層に分けています。
+
+```
+PersonsController → PersonsService → PersonsRepository → Prisma
+```
+
+ルートの `GET /` だけ `src/app.controller.ts` に残しています。API の形は DTO と Swagger が持ち、フロントへ渡す型は OpenAPI から生成します。
 
 ## Project setup
 

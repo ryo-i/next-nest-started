@@ -8,8 +8,7 @@
   },
   "workspaces": [
     "apps/frontend",
-    "apps/backend",
-    "packages/shared"
+    "apps/backend"
   ],
   "devDependencies": {
     "husky": "^9.1.7",

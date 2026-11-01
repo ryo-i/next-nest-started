@@ -3,10 +3,9 @@
 - フロントエンド：Next.js 15（App Router / Bulletproof React）
 - バックエンド：NestJS 11（レイヤードアーキテクチャ）
 - DB：PostgreSQL + Prisma
-- 共通型：`packages/shared`（backend ドメイン） / OpenAPI（フロントの API 型）
+- API 型：OpenAPI（フロント） / DTO とドメイン型（バックエンド）
 - CI：GitHub Actions で unit / e2e を実行
 - API ドキュメント：Swagger（`/api`） / OpenAPI spec（`apps/backend/openapi.json`）
-- 型定義ドキュメント：TypeDoc（`packages/shared/docs`）
 - DB GUI：Prisma Studio
 - UIカタログ：Storybook
 - バリデーション：`class-validator` + `ValidationPipe`
@@ -15,17 +14,18 @@
 
 ### バックエンド
 
-レイヤードアーキテクチャです。インフラ（Prisma）は Repository の抽象を通して切り離しています。
+レイヤードアーキテクチャです。機能モジュール `persons/` の中を、プレゼンテーション層、ドメイン層、データアクセス層に分けています。Prisma はデータアクセス層だけが使います。
 
 ```
-Controller → Service → Repository（抽象） → Repository実装（Prisma）
+PersonsController → PersonsService → PersonsRepository → Prisma
 ```
 
-- `app.controller.ts` : プレゼンテーション層（エンドポイント定義）
+- `persons/persons.controller.ts` : プレゼンテーション層（エンドポイント）
 - `persons/dto/` : プレゼンテーション層（リクエスト/レスポンス DTO + Swagger / class-validator）
-- `app.service.ts` : アプリケーション層（ビジネスロジック）
-- `persons/persons.repository.ts` : Repositoryインターフェース（抽象クラス）
-- `persons/persons.repository.impl.ts` : インフラ層（Prisma実装）
+- `persons/persons.service.ts` : ドメイン層（ユースケース）
+- `persons/person.ts` : ドメイン型
+- `persons/persons.repository.ts` : データアクセス層（Prisma）
+- `app.controller.ts` : ルートメッセージ
 - `common/filters/global-exception.filter.ts` : グローバルエラーハンドリング
 
 認証・設定ライブラリは未導入です。必要になったときの候補:
@@ -72,16 +72,7 @@ backend DTO / Swagger
   → axios（通信）
 ```
 
-フロントの API 型は OpenAPI から生成します。backend の API を変えたら `npm run generate:api` で同期します。axios は通信担当のままです。
-
-### 共通型（packages/shared）
-
-```
-packages/shared/src/types/person.ts
-  → Person / CreatePersonDto / UpdatePersonDto
-```
-
-backend のドメイン型として残しています。フロントの API 型は OpenAPI 側を正とします。
+フロントの API 型は OpenAPI から生成します。backend の API を変えたら `npm run generate:api` で同期します。axios は通信担当のままです。バックエンドのドメイン型は `persons/person.ts` に置きます。
 
 ## ファイル構成
 
@@ -91,10 +82,9 @@ backend のドメイン型として残しています。フロントの API 型�
 │   ├── backend/
 │   │   ├── src/
 │   │   │   ├── common/filters/       # グローバルエラーハンドリング
-│   │   │   ├── persons/              # レイヤード（Repository）
+│   │   │   ├── persons/              # Controller / Service / Repository
 │   │   │   ├── prisma/               # PrismaService
-│   │   │   ├── app.controller.ts
-│   │   │   ├── app.service.ts
+│   │   │   ├── app.controller.ts     # ルートメッセージ
 │   │   │   └── main.ts
 │   │   ├── prisma/
 │   │   │   ├── schema.prisma
@@ -111,9 +101,6 @@ backend のドメイン型として残しています。フロントの API 型�
 │       │   │   └── index.ts          # feature の公開口
 │       │   └── lib/                  # 共通 axios・OpenAPI生成型
 │       └── e2e/                      # PlaywrightによるE2E
-├── packages/
-│   └── shared/                       # フロント・バック共通型
-│       └── src/types/person.ts
 ├── docker-compose.yml
 └── package.json                      # npm workspaces（monorepo）
 ```
@@ -182,20 +169,6 @@ DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb BACKEND_PORT=3001 npm
 
 この状態で `http://localhost:3001/api` と `http://localhost:3001/api-json` を開けます。
 この手順は一時的な回避策です。Docker 側が安定したら通常手順（Docker 起動）に戻してください。
-
-### TypeDoc（型定義ドキュメント）
-
-共有型定義（`packages/shared`）を HTML ドキュメント化します：
-
-```bash
-cd packages/shared
-npm run build:docs
-open docs/index.html
-```
-
-- `Person` / `CreatePersonDto` / `UpdatePersonDto` の型定義が自動文書化されます
-- `packages/shared/docs/index.html` から確認可能
-- TSDoc コメントから自動生成・更新されます
 
 ### Prisma Studio（DB GUI）
 

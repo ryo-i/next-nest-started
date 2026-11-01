@@ -1,9 +1,31 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getRoot",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Welcome to the API!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "ルートメッセージを返す",
+        "tags": ["App"]
+      }
+    },
     "/persons": {
       "get": {
-        "operationId": "AppController_getPersons",
+        "operationId": "PersonsController_getPersons",
         "parameters": [],
         "responses": {
           "200": {
@@ -24,7 +46,7 @@
         "tags": ["persons"]
       },
       "post": {
-        "operationId": "AppController_createPerson",
+        "operationId": "PersonsController_createPerson",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -52,28 +74,6 @@
           }
         },
         "summary": "人物を作成する",
-        "tags": ["persons"]
-      }
-    },
-    "/": {
-      "get": {
-        "operationId": "AppController_getRoot",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "message": "Welcome to the API!"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "ルートメッセージを返す",
         "tags": ["persons"]
       }
     }

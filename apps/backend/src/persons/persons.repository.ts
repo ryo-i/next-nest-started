@@ -1,9 +1,18 @@
-import { Person } from '@repo/shared';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { Person } from './person';
 
-export abstract class IPersonRepository {
-  abstract findAll(): Promise<Person[]>;
-  abstract findById(id: number): Promise<Person | null>;
-  abstract create(data: { name: string }): Promise<Person>;
-  abstract update(id: number, data: { name: string }): Promise<Person>;
-  abstract delete(id: number): Promise<Person>;
+@Injectable()
+export class PersonsRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findAll(): Promise<Person[]> {
+    return this.prisma.person.findMany();
+  }
+
+  async create(data: { name: string }): Promise<Person> {
+    return this.prisma.person.create({
+      data,
+    });
+  }
 }

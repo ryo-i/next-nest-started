@@ -4,24 +4,6 @@
  */
 
 export interface paths {
-  "/persons": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 人物一覧を取得する */
-    get: operations["AppController_getPersons"];
-    put?: never;
-    /** 人物を作成する */
-    post: operations["AppController_createPerson"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/": {
     parameters: {
       query?: never;
@@ -33,6 +15,24 @@ export interface paths {
     get: operations["AppController_getRoot"];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/persons": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 人物一覧を取得する */
+    get: operations["PersonsController_getPersons"];
+    put?: never;
+    /** 人物を作成する */
+    post: operations["PersonsController_createPerson"];
     delete?: never;
     options?: never;
     head?: never;
@@ -65,7 +65,26 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  AppController_getPersons: {
+  AppController_getRoot: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  PersonsController_getPersons: {
     parameters: {
       query?: never;
       header?: never;
@@ -84,7 +103,7 @@ export interface operations {
       };
     };
   };
-  AppController_createPerson: {
+  PersonsController_createPerson: {
     parameters: {
       query?: never;
       header?: never;
@@ -111,25 +130,6 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
-      };
-    };
-  };
-  AppController_getRoot: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": unknown;
-        };
       };
     };
   };
