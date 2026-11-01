@@ -14,7 +14,9 @@ COPY apps/backend apps/backend
 WORKDIR /app/apps/backend
 
 RUN npx prisma generate
+RUN chmod +x docker-entrypoint.sh
 
 EXPOSE 3001
 
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["npm", "run", "start:dev"]

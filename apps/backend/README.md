@@ -31,6 +31,8 @@ PersonsController → PersonsService → PersonsRepository → Prisma
 
 ルートの `GET /` だけ `src/app.controller.ts` に残しています。API の形は DTO と Swagger が持ち、フロントへ渡す型は OpenAPI から生成します。
 
+Docker では `docker-entrypoint.sh` が、サーバー起動前に `prisma migrate deploy` を実行します。
+
 ## Project setup
 
 依存関係はリポジトリルートの lockfile から入れます。

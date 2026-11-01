@@ -174,7 +174,10 @@ docker compose up -d db
 # 2) backend コンテナが 3001 を使っている場合は停止
 docker compose stop backend
 
-# 3) backend をローカル起動（DB は Docker の 55432 に接続）
+# 3) 既存の migration を適用する
+DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb npm exec --workspace=apps/backend prisma migrate deploy
+
+# 4) backend をローカル起動（DB は Docker の 55432 に接続）
 DATABASE_URL=postgres://user:password@127.0.0.1:55432/mydb BACKEND_PORT=3001 npm run start:dev --workspace=apps/backend
 ```
 
@@ -226,9 +229,10 @@ npm run storybook
 - `features/persons` の `Persons.tsx` は hook を使うラッパーにして、Storybook では副作用のない `PersonsView` と `PersonsStatus` を見せています
 - loading / error は `resourceLabel` を props で受け、別画面でも流用しやすい形にしています
 
-### DB 初期化（初回のみ）
+### DB 初期化
 
-`docker compose up` 時に Prisma migration が自動実行されます。
+backend コンテナは、プロセスの起動前に `prisma migrate deploy` を実行します。`apps/backend/prisma/migrations` にある SQL をデータベースへ適用します。適用済みの migration は再実行しません。新しい migration ファイルを作るときは `prisma migrate dev` を使います。
+
 サンプルデータの投入：
 
 ```bash
