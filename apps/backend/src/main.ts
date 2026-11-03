@@ -24,4 +24,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, createOpenApiDocument(app));
   await app.listen(process.env.PORT ?? process.env.BACKEND_PORT ?? 3001);
 }
-bootstrap();
+bootstrap().catch((error: unknown) => {
+  console.error(error);
+  process.exit(1);
+});
