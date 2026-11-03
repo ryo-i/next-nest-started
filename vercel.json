@@ -3,10 +3,12 @@
   "services": {
     "frontend": {
       "root": "apps/frontend",
+      "framework": "nextjs",
       "installCommand": "cd ../.. && HUSKY=0 npm ci"
     },
     "backend": {
       "root": "apps/backend",
+      "framework": "nestjs",
       "installCommand": "cd ../.. && HUSKY=0 npm ci"
     }
   },

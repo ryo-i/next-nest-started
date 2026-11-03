@@ -11,7 +11,7 @@
 
 フロントだけ Vercel、バックを Render にする分け方は、この増やし方の初期の標準にはしません。Auth や Storage を Supabase に寄せるアプリ以外では、データベースは Neon にします。最初から全部を AWS に置くのは、いちばん後にします。
 
-GitHub を Vercel に接続しただけでは、フロントとバックはまとまりません。ルートの `vercel.json` が Services で `apps/frontend` と `apps/backend` を 1 つのプロジェクトにします。`/persons` と Swagger の `/api` はバックエンドへ、それ以外はフロントへ送ります。画面と API は同じホストになるので、Vercel の `NEXT_PUBLIC_API_URL` は `/` にします。
+GitHub を Vercel に接続しただけでは、フロントとバックはまとまりません。ルートの `vercel.json` が Services で `apps/frontend` と `apps/backend` を 1 つのプロジェクトにします。フレームワークは `nextjs` と `nestjs` と明示しています。`apps/frontend` には Vite、Storybook、Dockerfile もあるため、自動判定のままだとビルドが止まります。`/persons` と Swagger の `/api` はバックエンドへ、それ以外はフロントへ送ります。画面と API は同じホストになるので、Vercel の `NEXT_PUBLIC_API_URL` は `/` にします。
 
 Neon 用の設定ファイルはありません。Vercel の Marketplace から Neon をこのプロジェクトに接続すると、`DATABASE_URL`（プール）と `DATABASE_URL_UNPOOLED`（直接接続）が入ります。Vercel 上のインストールでは `apps/backend/scripts/vercel-prisma.js` が `prisma generate` のあと、直接接続があればそれで `prisma migrate deploy` します。プレビュー用の分岐は Preview だけをオンにします。ローカルと Docker はこれまでどおり `DATABASE_URL` と、起動前の `docker-entrypoint.sh` です。
 
