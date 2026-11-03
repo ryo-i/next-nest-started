@@ -31,7 +31,7 @@ PersonsController → PersonsService → PersonsRepository → Prisma
 
 ルートの `GET /` だけ `src/app.controller.ts` に残しています。API の形は DTO と Swagger が持ち、フロントへ渡す型は OpenAPI から生成します。
 
-Docker では `docker-entrypoint.sh` が、サーバー起動前に `prisma migrate deploy` を実行します。
+Docker では `docker-entrypoint.sh` が、サーバー起動前に `prisma migrate deploy` を実行します。Vercel では `scripts/vercel-prisma.js` が、ビルド時だけ同じ migration を直接接続で適用します。待ち受けは `PORT`、無ければ `BACKEND_PORT` です。
 
 ## Project setup
 

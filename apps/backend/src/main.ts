@@ -22,6 +22,6 @@ async function bootstrap() {
     credentials: true,
   });
   SwaggerModule.setup('api', app, createOpenApiDocument(app));
-  await app.listen(process.env.BACKEND_PORT ?? 3001);
+  await app.listen(process.env.PORT ?? process.env.BACKEND_PORT ?? 3001);
 }
 bootstrap();

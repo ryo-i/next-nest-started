@@ -86,9 +86,9 @@ backend DTO / Swagger
 
 手順中の `DATABASE_URL` はローカル用です。Docker のコンテナ同士は `db:5432`、このマシンから接続するときは `127.0.0.1:55432` を使います。
 
-本番では `DATABASE_URL` を、その環境の PostgreSQL の接続文字列に差し替えます。スキーマも、起動前の `prisma migrate deploy` も同じです。フロントとバックの URL が変わるときは `NEXT_PUBLIC_API_URL` と `FRONTEND_ORIGIN` も合わせます。
+本番では `DATABASE_URL` を、その環境の PostgreSQL の接続文字列に差し替えます。Docker では起動前の `prisma migrate deploy` がスキーマを適用します。Vercel では `vercel.json` の 1 プロジェクトにフロントとバックを置き、`/persons` と `/api` をバックエンドへ送ります。同じホストで API を呼ぶときは `NEXT_PUBLIC_API_URL=/` にします。Neon を Vercel に接続すると接続文字列が入り、Vercel 上では直接接続で migration を適用します。ホストを分けるときは `FRONTEND_ORIGIN` も合わせます。検討の過程は [docs/deploy.md](docs/deploy.md) にあります。
 
-置き場所は分けても、ひとつにまとめても、同じ構成で出せます。複数のリポジトリで小さなアプリを増やすときの標準は、フロントとバックを Vercel の 1 プロジェクトにまとめ、データベースは Neon に 1 つ置くことです。検討の過程は [docs/deploy.md](docs/deploy.md) にあります。
+置き場所は分けても、ひとつにまとめても、同じ構成で出せます。
 
 - 分ける例: フロントを Vercel、バックを Render、DB を Supabase や Render Postgres に出す。
 - まとめる例: AWS の中にフロント、バック、RDS を置く。
@@ -124,7 +124,8 @@ backend DTO / Swagger
 │   └── deploy.md                     # デプロイ先の検討
 ├── docker-compose.yml
 ├── package.json                      # npm workspaces（monorepo）
-└── package-lock.json                 # 依存の唯一の lockfile
+├── package-lock.json                 # 依存の唯一の lockfile
+└── vercel.json                       # Vercel Services（フロントとバック）
 ```
 
 ## セットアップ・起動

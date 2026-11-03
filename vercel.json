@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "frontend": {
+      "root": "apps/frontend",
+      "installCommand": "cd ../.. && HUSKY=0 npm ci"
+    },
+    "backend": {
+      "root": "apps/backend",
+      "installCommand": "cd ../.. && HUSKY=0 npm ci"
+    }
+  },
+  "rewrites": [
+    { "source": "/persons", "destination": { "service": "backend" } },
+    { "source": "/persons/(.*)", "destination": { "service": "backend" } },
+    { "source": "/api", "destination": { "service": "backend" } },
+    { "source": "/api/(.*)", "destination": { "service": "backend" } },
+    { "source": "/(.*)", "destination": { "service": "frontend" } }
+  ]
+}

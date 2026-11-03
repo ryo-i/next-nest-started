@@ -11,7 +11,11 @@
 
 フロントだけ Vercel、バックを Render にする分け方は、この増やし方の初期の標準にはしません。Auth や Storage を Supabase に寄せるアプリ以外では、データベースは Neon にします。最初から全部を AWS に置くのは、いちばん後にします。
 
-GitHub を Vercel に接続しただけでは、フロントとバックはまとまりません。Services は `vercel.json` が必要です。このリポジトリにはまだそのファイルはありません。
+GitHub を Vercel に接続しただけでは、フロントとバックはまとまりません。ルートの `vercel.json` が Services で `apps/frontend` と `apps/backend` を 1 つのプロジェクトにします。`/persons` と Swagger の `/api` はバックエンドへ、それ以外はフロントへ送ります。画面と API は同じホストになるので、Vercel の `NEXT_PUBLIC_API_URL` は `/` にします。
+
+Neon 用の設定ファイルはありません。Vercel の Marketplace から Neon をこのプロジェクトに接続すると、`DATABASE_URL`（プール）と `DATABASE_URL_UNPOOLED`（直接接続）が入ります。Vercel 上のインストールでは `apps/backend/scripts/vercel-prisma.js` が `prisma generate` のあと、直接接続があればそれで `prisma migrate deploy` します。プレビュー用の分岐は Preview だけをオンにします。ローカルと Docker はこれまでどおり `DATABASE_URL` と、起動前の `docker-entrypoint.sh` です。
+
+待ち受けは `PORT`、無ければ `BACKEND_PORT`、それも無ければ 3001 です。Vercel は `PORT` を渡します。
 
 ## 比較
 
@@ -57,7 +61,7 @@ Vercel は 2025年10月から、NestJS を設定ファイルなしで 1 つの V
 
 Hobby の月間枠（Active CPU 4 時間、Function 呼び出し 100 万回など）はアカウント全体で共有です。個人の非商用が前提で、商用にするときは Pro（月 $20）です。この料金はプロジェクト数には比例しません。
 
-NestJS を Function として動かすときは、待ち受けを `PORT` にし、`prisma migrate deploy` をビルドで実行し、依存関係はリポジトリルートの lockfile で `npm ci` します。インスタンスが増減するので、Postgres はプール用の接続文字列を使います。1 リクエストの上限は Hobby で 300 秒です。常時接続や、プロセスの中で動き続ける処理には向きません。
+NestJS を Function として動かす設定はリポジトリに入っています。待ち受けは `PORT` を優先し、Vercel のビルドで `prisma migrate deploy` を実行し、依存関係はリポジトリルートの lockfile で `npm ci` します。インスタンスが増減するので、実行時の `DATABASE_URL` はプール用を使います。1 リクエストの上限は Hobby で 300 秒です。常時接続や、プロセスの中で動き続ける処理には向きません。
 
 ### Render を初期の標準にしない
 
