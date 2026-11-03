@@ -20,6 +20,11 @@ execFileSync(prismaBin, ['generate', '--schema', schema], {
   cwd: backendRoot,
 });
 
+// Vercel は動的に開く WASM を Function に入れない。require できる JS に置き換える。
+if (process.env.VERCEL === '1') {
+  embedQueryCompilerWasm(backendRoot);
+}
+
 if (process.env.VERCEL !== '1') {
   process.exit(0);
 }
@@ -37,3 +42,42 @@ execFileSync(prismaBin, ['migrate', 'deploy', '--schema', schema], {
   cwd: backendRoot,
   env: { ...process.env, DATABASE_URL: databaseUrl },
 });
+
+function embedQueryCompilerWasm(backendRoot) {
+  const clientDir = path.join(
+    backendRoot,
+    '..',
+    '..',
+    'node_modules',
+    '.prisma',
+    'client',
+  );
+  const indexPath = path.join(clientDir, 'index.js');
+  const wasmPath = path.join(clientDir, 'query_compiler_bg.wasm');
+
+  if (!fs.existsSync(indexPath) || !fs.existsSync(wasmPath)) {
+    console.warn('Prisma query compiler wasm was not found; skip embed');
+    return;
+  }
+
+  const embeddedPath = path.join(clientDir, 'query_compiler_wasm_embedded.js');
+  const base64 = fs.readFileSync(wasmPath).toString('base64');
+  fs.writeFileSync(
+    embeddedPath,
+    `'use strict';\nmodule.exports = ${JSON.stringify(base64)};\n`,
+  );
+
+  const index = fs.readFileSync(indexPath, 'utf8');
+  const pattern =
+    /getQueryCompilerWasmModule:\s*async\s*\(\)\s*=>\s*\{[\s\S]*?query_compiler_bg\.wasm[\s\S]*?\n\s*\}/;
+  if (!pattern.test(index)) {
+    console.warn('Prisma client wasm loader was not found; skip embed');
+    return;
+  }
+
+  const replacement = `getQueryCompilerWasmModule: async () => {
+        const queryCompilerWasmBase64 = require('./query_compiler_wasm_embedded.js')
+        return new WebAssembly.Module(Buffer.from(queryCompilerWasmBase64, 'base64'))
+      }`;
+  fs.writeFileSync(indexPath, index.replace(pattern, replacement));
+}
