@@ -33,7 +33,7 @@ Neon 用の設定ファイルはありません。Vercel の Marketplace（ま�
 5. Environments は **Production** と **Preview** にします。
 6. **Create database branch for deployment** は **Preview だけ**オンにします。Production はオフです。Production をオンにすると、本番デプロイのたびに接続先のデータベースが変わります。
 7. Custom Prefix は空にします。文字が入っていると、環境変数名が `DATABASE_URL` ではなくなります。サンプルとして `STORAGE` と表示されていても、入力されていなければそのままで構いません。
-8. Sensitive はオンのままにします。オンにすると、あとから Vercel の画面では値を表示できません。
+8. Sensitive はオンのままにします。オンにすると、あとから Vercel の画面では値を表示できません。接続文字列や、あとから足す署名鍵の置き方は [deploy.md の秘密と公開範囲](deploy.md#秘密と公開範囲) にあります。
 9. Connect します。Skip は押しません。
 
 接続できると、Vercel の **Settings → Environment Variables** に次が入ります。どちらも Production と Preview に付いていることを確認します。ほかの変数が増えていても、アプリが使うのはこの 2 つです。

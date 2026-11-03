@@ -20,7 +20,7 @@ PersonsController → PersonsService → PersonsRepository → Prisma
 
 認証・設定ライブラリは未導入です。必要になったときの候補:
 
-- 認証: `@nestjs/jwt` + Passport（JWT。フロントの Auth.js と対になる）
+- 認証: `@nestjs/jwt` + Passport（JWT。フロントの Auth.js と対になる）。秘密の置き方は [deploy.md](deploy.md#秘密と公開範囲)
 - 設定: `@nestjs/config`（環境変数の型付き読み込み）
 - レート制限: `@nestjs/throttler`
 - ログ: nestjs-pino
