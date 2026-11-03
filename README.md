@@ -88,7 +88,7 @@ backend DTO / Swagger
 
 本番では `DATABASE_URL` を、その環境の PostgreSQL の接続文字列に差し替えます。スキーマも、起動前の `prisma migrate deploy` も同じです。フロントとバックの URL が変わるときは `NEXT_PUBLIC_API_URL` と `FRONTEND_ORIGIN` も合わせます。
 
-置き場所は分けても、ひとつにまとめても、同じ構成で出せます。
+置き場所は分けても、ひとつにまとめても、同じ構成で出せます。複数のリポジトリで小さなアプリを増やすときの標準は、フロントとバックを Vercel の 1 プロジェクトにまとめ、データベースは Neon に 1 つ置くことです。検討の過程は [docs/deploy.md](docs/deploy.md) にあります。
 
 - 分ける例: フロントを Vercel、バックを Render、DB を Supabase や Render Postgres に出す。
 - まとめる例: AWS の中にフロント、バック、RDS を置く。
@@ -120,6 +120,8 @@ backend DTO / Swagger
 │       │   │   └── index.ts          # feature の公開口
 │       │   └── lib/                  # 共通 axios・OpenAPI生成型
 │       └── e2e/                      # PlaywrightによるE2E
+├── docs/
+│   └── deploy.md                     # デプロイ先の検討
 ├── docker-compose.yml
 ├── package.json                      # npm workspaces（monorepo）
 └── package-lock.json                 # 依存の唯一の lockfile
