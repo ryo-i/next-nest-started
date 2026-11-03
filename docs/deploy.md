@@ -1,6 +1,6 @@
 # デプロイ先の検討
 
-このスターターを複製して、複数のリポジトリで小さな Web アプリを増やすときの置き場所です。アプリの形（Next.js、NestJS、Prisma、PostgreSQL）は変えません。2026年11月時点の各社の枠で比べています。
+このスターターを複製して、複数のリポジトリで小さな Web アプリを増やすときの置き場所です。アプリの形（Next.js、NestJS、Prisma、PostgreSQL）は変えません。2026年11月時点の各社の枠で比べています。Vercel と Neon へ出す手順は [deploy-vercel.md](deploy-vercel.md) にあります。
 
 ## 結論
 

@@ -34,7 +34,9 @@ Page → Feature（Component / Hook / API） → 共通 axios クライアント
 
 ローカルの `DATABASE_URL` は Docker 内部が `db:5432`、このマシンからは `127.0.0.1:55432` です。本番ではその環境の PostgreSQL に差し替えます。
 
-複数のリポジトリで小さなアプリを増やすときの標準は、フロントとバックを Vercel の 1 プロジェクトにまとめ、データベースは Neon に 1 つ置くことです。同じ構成のまま、ホストを分けることも、AWS にまとめることもできます。手順と判断は [docs/deploy.md](docs/deploy.md) にあります。
+複数のリポジトリで小さなアプリを増やすときの標準は、フロントとバックを Vercel の 1 プロジェクトにまとめ、データベースは Neon に 1 つ置くことです。公開すると、画面と `/persons` は同じホストになります。サンプルデータは自動では入らないので、最初の一覧は 0 名です。
+
+手順は [docs/deploy-vercel.md](docs/deploy-vercel.md)、置き場所の判断は [docs/deploy.md](docs/deploy.md) にあります。同じ構成のまま、ホストを分けることも、AWS にまとめることもできます。
 
 ## ファイル構成
 
@@ -66,6 +68,7 @@ Page → Feature（Component / Hook / API） → 共通 axios クライアント
 ├── docs/
 │   ├── architecture.md               # 構成とデータの置き方
 │   ├── deploy.md                     # デプロイ先の検討
+│   ├── deploy-vercel.md              # Vercel と Neon に出す手順
 │   └── local.md                      # 起動の補足
 ├── docker-compose.yml
 ├── package.json                      # npm workspaces（monorepo）
