@@ -9,7 +9,12 @@
     "backend": {
       "root": "apps/backend",
       "framework": "nestjs",
-      "installCommand": "cd ../.. && HUSKY=0 npm ci"
+      "installCommand": "cd ../.. && HUSKY=0 npm ci",
+      "functions": {
+        "src/main.ts": {
+          "includeFiles": "../../node_modules/.prisma/client/query_compiler_bg.wasm"
+        }
+      }
     }
   },
   "rewrites": [
