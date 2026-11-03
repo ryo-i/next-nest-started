@@ -252,11 +252,13 @@ npm run storybook
 
 backend コンテナは、プロセスの起動前に `prisma migrate deploy` を実行します。`apps/backend/prisma/migrations` にある SQL をデータベースへ適用します。適用済みの migration は再実行しません。新しい migration ファイルを作るときは `prisma migrate dev` を使います。
 
-サンプルデータの投入：
+今の `prisma/seed.ts` はローカル確認用のサンプルデータです。`Person` をすべて削除してから入れ直すので、起動時には実行せず、必要なときだけ次を実行します。
 
 ```bash
 docker compose exec backend npx prisma db seed
 ```
+
+マスターデータを seed で入れるときは、API が登録するテーブルとは別のテーブルにします。`seed.ts` ではこちらで決めた `id` を `upsert` し、廃止は行を消さず `deletedAt` を更新します。すでにその `id` を参照している行は残ります。ローカル確認用のサンプルは `prisma/seed-dev.ts` に分け、必要なときだけコマンドで実行します。起動時には実行しません。
 
 ### ログ確認
 
