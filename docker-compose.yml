@@ -22,8 +22,12 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - PORT=${BACKEND_PORT}
+      - TSC_WATCHFILE=DynamicPriorityPolling
+      - TSC_WATCHDIRECTORY=DynamicPriorityPolling
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./apps/backend/src:/app/apps/backend/src
 
   frontend:
     build:
